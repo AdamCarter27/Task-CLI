@@ -1,0 +1,8 @@
+[project]
+name = "task-cli"
+version = "0.1.0"
+description = "Pomodoro CLI with Timewarrior"
+dependencies = []
+
+[project.scripts]
+task = "task.main:main"
