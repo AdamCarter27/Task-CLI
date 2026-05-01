@@ -1,0 +1,1 @@
+This is a productivity CLI tool to track time spent on different tasks using time warrior, as well as having a built in pomodoro timer for studying
