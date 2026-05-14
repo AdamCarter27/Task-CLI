@@ -12,7 +12,14 @@ def start():
     if subcats:
         subcategory = ui.choose(subcats, "Subcategory:")
 
-    pomodoro.run(category, subcategory)
+    mode = ui.choose(["Pomodoro", "Open Timer"], "Mode:")
+    if not mode:
+        return
+
+    if mode == "Pomodoro":
+        pomodoro.run(category, subcategory)
+    else:
+        pomodoro.run_open(category, subcategory)
 
 
 def main():

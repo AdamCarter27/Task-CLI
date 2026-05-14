@@ -32,3 +32,13 @@ def run(category, subcategory):
             break
 
         cycle += 1
+
+def run_open(category, subcategory):
+    print(f"\n--- Open Timer: {category}>{subcategory} ---")
+    timew.start(category, subcategory)
+    notify.send("Timer started")
+
+    ui.elapsed_timer(f"{category}>{subcategory}")
+
+    timew.stop()
+    notify.send("Timer stopped")
