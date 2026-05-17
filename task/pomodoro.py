@@ -33,6 +33,16 @@ def run(category, subcategory):
 
         cycle += 1
 
+def run_timer(category, subcategory, minutes):
+    print(f"\n--- Timer: {category}>{subcategory} ({minutes}m) ---")
+    timew.start(category, subcategory)
+    notify.send("Timer started")
+
+    ui.countdown(minutes, f"{category}>{subcategory}")
+
+    timew.stop()
+    notify.send("Timer complete!")
+
 def run_open(category, subcategory):
     print(f"\n--- Open Timer: {category}>{subcategory} ---")
     timew.start(category, subcategory)
