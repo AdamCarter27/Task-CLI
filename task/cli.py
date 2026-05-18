@@ -1,5 +1,5 @@
 import argparse
-from task import config, ui, pomodoro
+from task import config, ui, pomodoro, stats
 
 
 def start():
@@ -84,12 +84,37 @@ def config_cmd():
         print(f"Removed '{sub}' from '{cat}'.")
 
 
+def shortcuts_cmd():
+    print("""
+Commands
+────────────────────────────────
+  task start       Start a new session
+  task stats       Show today and weekly totals
+  task config      Add or remove categories
+  task shortcuts   Show this help
+
+Selection menus (fzf)
+────────────────────────────────
+  j / k            Move down / up
+  Enter            Confirm selection
+  Ctrl-C           Cancel
+
+During a timer
+────────────────────────────────
+  p                Pause / resume
+  Enter            Stop (open timer only)
+  Ctrl-C           Quit
+""")
+
+
 def main():
     parser = argparse.ArgumentParser(prog="task")
     subparsers = parser.add_subparsers(dest="command")
 
     subparsers.add_parser("start")
     subparsers.add_parser("config")
+    subparsers.add_parser("stats")
+    subparsers.add_parser("shortcuts")
 
     args = parser.parse_args()
 
@@ -97,5 +122,9 @@ def main():
         start()
     elif args.command == "config":
         config_cmd()
+    elif args.command == "stats":
+        stats.show()
+    elif args.command == "shortcuts":
+        shortcuts_cmd()
     else:
         parser.print_help()
