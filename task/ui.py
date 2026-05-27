@@ -35,19 +35,27 @@ def _render_elapsed(label, elapsed, paused):
     sys.stdout.flush()
 
 
+def _active_elapsed(start, paused_total, pause_start):
+    paused_now = (time.time() - pause_start) if pause_start else 0
+    return time.time() - start - paused_total - paused_now
+
+
 def countdown(minutes, label=""):
     total = minutes * 60
-    elapsed = 0
-    paused = False
+    start = time.time()
+    paused_total = 0.0
+    pause_start = None
 
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
     try:
         tty.setraw(fd)
-        last_tick = time.time()
 
-        while elapsed < total:
-            _render_countdown(label, total - elapsed, total, paused)
+        while True:
+            elapsed = _active_elapsed(start, paused_total, pause_start)
+            if elapsed >= total:
+                break
+            _render_countdown(label, int(total - elapsed), total, pause_start is not None)
 
             r, _, _ = select.select([sys.stdin], [], [], 0.1)
             if r:
@@ -55,12 +63,11 @@ def countdown(minutes, label=""):
                 if ch == '\x03':
                     raise KeyboardInterrupt
                 elif ch == 'p':
-                    paused = not paused
-                    last_tick = time.time()
-
-            if not paused and time.time() - last_tick >= 1.0:
-                elapsed += 1
-                last_tick = time.time()
+                    if pause_start is None:
+                        pause_start = time.time()
+                    else:
+                        paused_total += time.time() - pause_start
+                        pause_start = None
     finally:
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
@@ -68,17 +75,18 @@ def countdown(minutes, label=""):
 
 
 def elapsed_timer(label=""):
-    elapsed = 0
-    paused = False
+    start = time.time()
+    paused_total = 0.0
+    pause_start = None
 
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
     try:
         tty.setraw(fd)
-        last_tick = time.time()
 
         while True:
-            _render_elapsed(label, elapsed, paused)
+            elapsed = int(_active_elapsed(start, paused_total, pause_start))
+            _render_elapsed(label, elapsed, pause_start is not None)
 
             r, _, _ = select.select([sys.stdin], [], [], 0.1)
             if r:
@@ -88,12 +96,11 @@ def elapsed_timer(label=""):
                 elif ch in ('\r', '\n'):
                     break
                 elif ch == 'p':
-                    paused = not paused
-                    last_tick = time.time()
-
-            if not paused and time.time() - last_tick >= 1.0:
-                elapsed += 1
-                last_tick = time.time()
+                    if pause_start is None:
+                        pause_start = time.time()
+                    else:
+                        paused_total += time.time() - pause_start
+                        pause_start = None
     finally:
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 

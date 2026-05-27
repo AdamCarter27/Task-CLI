@@ -62,3 +62,31 @@ def _print_block(label, totals):
 def show():
     _print_block("Today", _summarize(_get_entries(":day")))
     _print_block("This Week", _summarize(_get_entries(":week")))
+
+
+def recent_entries(n=10):
+    result = subprocess.run(
+        ["timew", "export", ":all"],
+        capture_output=True, text=True
+    )
+    if not result.stdout.strip():
+        return []
+    entries = json.loads(result.stdout)
+    return entries[-n:]
+
+
+def fmt_entry(entry):
+    fmt = "%Y%m%dT%H%M%SZ"
+    start = datetime.strptime(entry["start"], fmt).replace(tzinfo=timezone.utc)
+    start_local = start.astimezone().strftime("%Y-%m-%d %H:%M")
+
+    if "end" in entry:
+        end = datetime.strptime(entry["end"], fmt).replace(tzinfo=timezone.utc)
+        end_str = end.astimezone().strftime("%H:%M")
+        duration = _fmt((end - start).total_seconds())
+    else:
+        end_str = "now"
+        duration = _fmt((datetime.now(timezone.utc) - start).total_seconds())
+
+    tag = entry.get("tags", ["?"])[0]
+    return f"@{entry['id']}  {tag:<25} {start_local} → {end_str}  ({duration})"
