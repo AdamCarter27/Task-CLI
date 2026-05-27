@@ -31,8 +31,10 @@ pip install -e .
 | Command          | Description                              |
 |------------------|------------------------------------------|
 | `task start`     | Start a new session                      |
+| `task stop`      | Stop any running session                 |
 | `task stats`     | Show time totals for today and this week |
 | `task config`    | Add or remove categories/subcategories   |
+| `task edit`      | Fix or delete a recent session           |
 | `task shortcuts` | Show all commands and key bindings       |
 
 ## Timer modes
