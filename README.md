@@ -2,6 +2,8 @@
 
 A productivity CLI for tracking time across tasks using [Timewarrior](https://timewarrior.net/), with a built-in Pomodoro timer for focused study sessions.
 
+![demo](demo.gif)
+
 ## Requirements
 
 - [Timewarrior](https://timewarrior.net/) (`timew`)
