@@ -24,3 +24,6 @@ dist/
 
 timew-backups/
 *.timewarrior
+
+#demo
+demo.tape

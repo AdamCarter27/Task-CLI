@@ -30,17 +30,32 @@ def start():
         pomodoro.run(category, subcategory)
 
 
+def _print_category_tree(categories):
+    items = list(categories.items())
+    for i, (cat, subs) in enumerate(items):
+        print(cat)
+        for j, sub in enumerate(subs):
+            prefix = "└──" if j == len(subs) - 1 else "├──"
+            print(f"  {prefix} {sub}")
+        if i < len(items) - 1:
+            print()
+
+
 def config_cmd():
     categories = config.load_categories()
 
     action = ui.choose(
-        ["Add category", "Remove category", "Add subcategory", "Remove subcategory"],
+        ["View categories", "Add category", "Remove category", "Add subcategory", "Remove subcategory"],
         "Action:",
     )
     if not action:
         return
 
-    if action == "Add category":
+    if action == "View categories":
+        print()
+        _print_category_tree(categories)
+
+    elif action == "Add category":
         name = input("Category name: ").strip()
         if not name:
             return
