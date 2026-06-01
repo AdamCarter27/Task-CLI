@@ -154,7 +154,7 @@ Commands
   task start       Start a new session
   task stop        Stop any running session
   task stats       Show today and weekly totals
-  task config      Add or remove categories
+  task config      Add, remove, or view categories
   task edit        Fix or delete a recent session
   task shortcuts   Show this help
 
