@@ -44,8 +44,11 @@ def _print_category_tree(categories):
 def config_cmd():
     categories = config.load_categories()
 
+    settings = config.load_settings()
+    chime_label = f"Toggle chime  [{'on' if settings['chime'] else 'off'}]"
+
     action = ui.choose(
-        ["View categories", "Add category", "Remove category", "Add subcategory", "Remove subcategory"],
+        ["View categories", "Add category", "Remove category", "Add subcategory", "Remove subcategory", chime_label],
         "Action:",
     )
     if not action:
@@ -87,6 +90,12 @@ def config_cmd():
         categories[cat].append(name)
         config.save_categories(categories)
         print(f"Added '{name}' to '{cat}'.")
+
+    elif action.startswith("Toggle chime"):
+        settings["chime"] = not settings["chime"]
+        config.save_settings(settings)
+        state = "on" if settings["chime"] else "off"
+        print(f"Chime {state}.")
 
     elif action == "Remove subcategory":
         cat = ui.choose(list(categories.keys()), "Category:")
@@ -154,7 +163,7 @@ Commands
   task start       Start a new session
   task stop        Stop any running session
   task stats       Show today and weekly totals
-  task config      Add, remove, or view categories
+  task config      Manage categories and settings (chime on/off)
   task edit        Fix or delete a recent session
   task shortcuts   Show this help
 

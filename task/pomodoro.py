@@ -13,6 +13,7 @@ def run(category, subcategory):
         ui.countdown(config.POMODORO_MIN, f"{category}>{subcategory}")
 
         timew.stop()
+        notify.chime()
         notify.send("Pomodoro complete!")
 
         # Break logic
@@ -25,6 +26,7 @@ def run(category, subcategory):
             notify.send("Short break")
             ui.countdown(config.SHORT_BREAK_MIN, "Break")
 
+        notify.chime()
         notify.send("Break over")
 
         cont = input("\nContinue? (y/n): ").lower()
@@ -41,6 +43,7 @@ def run_timer(category, subcategory, minutes):
     ui.countdown(minutes, f"{category}>{subcategory}")
 
     timew.stop()
+    notify.chime()
     notify.send("Timer complete!")
 
 def run_open(category, subcategory):

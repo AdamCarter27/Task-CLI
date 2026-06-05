@@ -35,7 +35,7 @@ pip install -e .
 | `task start`     | Start a new session                      |
 | `task stop`      | Stop any running session                 |
 | `task stats`     | Show time totals for today and this week |
-| `task config`    | Add or remove categories/subcategories   |
+| `task config`    | Add or remove categories and toggle settings |
 | `task edit`      | Fix or delete a recent session           |
 | `task shortcuts` | Show all commands and key bindings       |
 
@@ -65,13 +65,22 @@ When starting a session you'll be prompted to pick a mode:
 
 ## Configuration
 
-Categories are stored in `~/.config/task-cli/config.json` and created with defaults on first run. Use `task config` to add or remove categories and subcategories interactively, or edit the file directly:
+All config is stored in `~/.config/task-cli/config.json` and created with defaults on first run. Use `task config` to manage everything interactively, or edit the file directly:
 
 ```json
 {
   "categories": {
     "Programming": ["LeetCode", "Personal Project", "Work Project", "Other"],
     "Math": ["Homework", "Review", "Other"]
+  },
+  "settings": {
+    "chime": true
   }
 }
 ```
+
+### Settings
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `chime` | `true`  | Play a sound when a countdown or Pomodoro timer ends |
