@@ -40,7 +40,7 @@ def _active_elapsed(start, paused_total, pause_start):
     return time.time() - start - paused_total - paused_now
 
 
-def countdown(minutes, label=""):
+def countdown(minutes, label="", on_pause=None, on_resume=None):
     total = minutes * 60
     start = time.time()
     paused_total = 0.0
@@ -65,16 +65,20 @@ def countdown(minutes, label=""):
                 elif ch == 'p':
                     if pause_start is None:
                         pause_start = time.time()
+                        if on_pause:
+                            on_pause()
                     else:
                         paused_total += time.time() - pause_start
                         pause_start = None
+                        if on_resume:
+                            on_resume()
     finally:
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
     sys.stdout.write("\n")
 
 
-def elapsed_timer(label=""):
+def elapsed_timer(label="", on_pause=None, on_resume=None):
     start = time.time()
     paused_total = 0.0
     pause_start = None
@@ -98,9 +102,13 @@ def elapsed_timer(label=""):
                 elif ch == 'p':
                     if pause_start is None:
                         pause_start = time.time()
+                        if on_pause:
+                            on_pause()
                     else:
                         paused_total += time.time() - pause_start
                         pause_start = None
+                        if on_resume:
+                            on_resume()
     finally:
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 

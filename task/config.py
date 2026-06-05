@@ -12,6 +12,7 @@ DEFAULT_CATEGORIES = {
 
 DEFAULT_SETTINGS = {
     "chime": True,
+    "spotify_playlist": "",
 }
 
 POMODORO_MIN = 25

@@ -46,9 +46,11 @@ def config_cmd():
 
     settings = config.load_settings()
     chime_label = f"Toggle chime  [{'on' if settings['chime'] else 'off'}]"
+    uri = settings.get("spotify_playlist", "")
+    spotify_label = f"Set Spotify playlist  [{'set' if uri else 'not set'}]"
 
     action = ui.choose(
-        ["View categories", "Add category", "Remove category", "Add subcategory", "Remove subcategory", chime_label],
+        ["View categories", "Add category", "Remove category", "Add subcategory", "Remove subcategory", chime_label, spotify_label],
         "Action:",
     )
     if not action:
@@ -96,6 +98,15 @@ def config_cmd():
         config.save_settings(settings)
         state = "on" if settings["chime"] else "off"
         print(f"Chime {state}.")
+
+    elif action.startswith("Set Spotify playlist"):
+        current = settings.get("spotify_playlist", "")
+        if current:
+            print(f"Current: {current}")
+        new_uri = input("Playlist URI (leave blank to clear): ").strip()
+        settings["spotify_playlist"] = new_uri
+        config.save_settings(settings)
+        print("Spotify playlist set." if new_uri else "Spotify playlist cleared.")
 
     elif action == "Remove subcategory":
         cat = ui.choose(list(categories.keys()), "Category:")
