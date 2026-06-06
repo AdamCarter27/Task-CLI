@@ -174,7 +174,7 @@ Commands
   task start       Start a new session
   task stop        Stop any running session
   task stats       Show today and weekly totals
-  task config      Manage categories and settings (chime on/off)
+  task config      Manage categories and settings (chime, Spotify playlist)
   task edit        Fix or delete a recent session
   task shortcuts   Show this help
 

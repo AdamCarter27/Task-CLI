@@ -74,13 +74,17 @@ All config is stored in `~/.config/task-cli/config.json` and created with defaul
     "Math": ["Homework", "Review", "Other"]
   },
   "settings": {
-    "chime": true
+    "chime": true,
+    "spotify_playlist": ""
   }
 }
 ```
 
 ### Settings
 
-| Setting | Default | Description |
-|---------|---------|-------------|
-| `chime` | `true`  | Play a sound when a countdown or Pomodoro timer ends |
+| Setting            | Default | Description |
+|--------------------|---------|-------------|
+| `chime`            | `true`  | Play a sound when a countdown or Pomodoro timer ends |
+| `spotify_playlist` | `""`    | Spotify playlist URI to play during sessions — pauses when you pause, stops when the timer ends |
+
+To set your Spotify playlist, right-click a playlist in Spotify → Share → Copy Spotify URI, then run `task config` → "Set Spotify playlist". The URI is stored only in your local config file and never committed to the repo.
