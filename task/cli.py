@@ -3,7 +3,7 @@ import subprocess
 from task import config, ui, pomodoro, stats, timew
 
 
-def start():
+def start(use_spotify=False):
     categories = config.load_categories()
 
     category = ui.choose(list(categories.keys()), "Category:")
@@ -21,13 +21,13 @@ def start():
         return
 
     if mode == "Open Timer":
-        pomodoro.run_open(category, subcategory)
+        pomodoro.run_open(category, subcategory, use_spotify=use_spotify)
     elif mode == "Timer":
         raw = input("Duration (minutes) [25]: ").strip()
         minutes = int(raw) if raw.isdigit() else 25
-        pomodoro.run_timer(category, subcategory, minutes)
+        pomodoro.run_timer(category, subcategory, minutes, use_spotify=use_spotify)
     else:
-        pomodoro.run(category, subcategory)
+        pomodoro.run(category, subcategory, use_spotify=use_spotify)
 
 
 def _print_category_tree(categories):
@@ -172,6 +172,7 @@ def shortcuts_cmd():
 Commands
 ────────────────────────────────
   task start       Start a new session
+  task start -s    Start a session with Spotify playlist
   task stop        Stop any running session
   task stats       Show today and weekly totals
   task config      Manage categories and settings (chime, Spotify playlist)
@@ -196,7 +197,8 @@ def main():
     parser = argparse.ArgumentParser(prog="task")
     subparsers = parser.add_subparsers(dest="command")
 
-    subparsers.add_parser("start")
+    start_parser = subparsers.add_parser("start")
+    start_parser.add_argument("-s", "--spotify", action="store_true", help="Play Spotify playlist during session")
     subparsers.add_parser("stop")
     subparsers.add_parser("config")
     subparsers.add_parser("stats")
@@ -206,7 +208,7 @@ def main():
     args = parser.parse_args()
 
     if args.command == "start":
-        start()
+        start(use_spotify=getattr(args, "spotify", False))
     elif args.command == "stop":
         stop()
     elif args.command == "config":

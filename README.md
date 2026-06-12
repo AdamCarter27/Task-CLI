@@ -33,6 +33,7 @@ pip install -e .
 | Command          | Description                              |
 |------------------|------------------------------------------|
 | `task start`     | Start a new session                      |
+| `task start -s`  | Start a session with Spotify playlist    |
 | `task stop`      | Stop any running session                 |
 | `task stats`     | Show time totals for today and this week |
 | `task config`    | Add or remove categories and toggle settings |

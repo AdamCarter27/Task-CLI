@@ -2,17 +2,19 @@
 from task import config, timew, notify, ui, spotify
 
 
-def _spotify_callbacks():
+def _spotify_hooks(use_spotify):
+    if not use_spotify:
+        return None, None, ""
     uri = config.load_settings().get("spotify_playlist", "")
     if not uri:
-        return None, None
-    return spotify.pause, lambda: spotify.play()
+        print("No Spotify playlist configured. Run: task config")
+        return None, None, ""
+    return spotify.pause, lambda: spotify.play(), uri
 
 
-def run(category, subcategory):
+def run(category, subcategory, use_spotify=False):
     cycle = 1
-    on_pause, on_resume = _spotify_callbacks()
-    uri = config.load_settings().get("spotify_playlist", "")
+    on_pause, on_resume, uri = _spotify_hooks(use_spotify)
 
     while True:
         print(f"\n--- Pomodoro {cycle} ---")
@@ -50,9 +52,8 @@ def run(category, subcategory):
         cycle += 1
 
 
-def run_timer(category, subcategory, minutes):
-    on_pause, on_resume = _spotify_callbacks()
-    uri = config.load_settings().get("spotify_playlist", "")
+def run_timer(category, subcategory, minutes, use_spotify=False):
+    on_pause, on_resume, uri = _spotify_hooks(use_spotify)
 
     print(f"\n--- Timer: {category}>{subcategory} ({minutes}m) ---")
     timew.start(category, subcategory)
@@ -70,9 +71,8 @@ def run_timer(category, subcategory, minutes):
         spotify.pause()
 
 
-def run_open(category, subcategory):
-    on_pause, on_resume = _spotify_callbacks()
-    uri = config.load_settings().get("spotify_playlist", "")
+def run_open(category, subcategory, use_spotify=False):
+    on_pause, on_resume, uri = _spotify_hooks(use_spotify)
 
     print(f"\n--- Open Timer: {category}>{subcategory} ---")
     timew.start(category, subcategory)
